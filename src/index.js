@@ -69,7 +69,7 @@ async function handleFlutterwaveWebhook(payload) {
 }
 
 app.get('/', async function (req, res) {
-  res.send('This is Einsteinai flutterwave webhook handler');
+  res.send('Einsteinai flutterwave webhook handler');
 });
 
 app.post('/flw-webhook', (req, res) => {
