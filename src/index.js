@@ -24,6 +24,8 @@ const database = new sdk.Databases(client);
 async function handleFlutterwaveWebhook(payload) {
   // console.log(payload, "from flutterwave");
   const userId = payload?.data?.customer?.id;
+
+  console.log(payload, "payload from webhook");
   // console.log(userId, "userid format");
 
   if (!userId) {
@@ -45,9 +47,8 @@ async function handleFlutterwaveWebhook(payload) {
 
   // console.log(userSubscriptionDetails?.documents[0], "user sub details");
 
-  const documentId = userSubscriptionDetails?.documents[0]["$id"]; 
+  const documentId = userSubscriptionDetails?.documents[0]["$id"];
   // console.log(documentId, "id document");
-
 
   try {
     if (
@@ -61,6 +62,7 @@ async function handleFlutterwaveWebhook(payload) {
         {
           is_subscribed: true,
           amount: payload?.data?.amount,
+          tx_ref: payload?.data?.tx_ref,
         }
       );
     } else if (
@@ -73,6 +75,8 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: false,
+          tx_ref: payload?.data?.tx_ref,
+          amount: payload?.data?.amount,
         }
       );
     } else if (
@@ -85,6 +89,8 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: false,
+          tx_ref: payload?.data?.tx_ref,
+          amount: payload?.data?.amount,
         }
       );
     }

@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.env
+.env.*
 dist
 dist-ssr
 *.local
@@ -25,4 +27,4 @@ dist-ssr
 
 # Ignore env.local
 env.local
-.env
+
