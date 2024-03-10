@@ -23,16 +23,18 @@ const database = new sdk.Databases(client);
 
 async function handleFlutterwaveWebhook(payload) {
   // console.log(payload, "from flutterwave");
-  const userId = payload?.customer?.id;
+  const userEmail = payload?.data?.customer?.email;
 
   console.log(payload, "payload from webhook");
   // console.log(userId, "userid format");
 
-  if (!userId) {
+  if (!userEmail) {
     console.error("User ID not found in the payload");
-    return payload;
+    return;
   }
-  const query = sdk.Query.equal("user_id", userId);
+
+  // console.log(userEmail,'email')
+  const query = sdk.Query.equal("user_email", userEmail);
 
   const userSubcriptionCollectionId =
     process.env.APPWRITE_USER_SUBCRIPTION_COLLECTION_DETAILS;
@@ -61,9 +63,9 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: true,
-          amount: payload?.amount,
-          tx_ref: payload?.tx_ref,
-          subscription_start_date: payload?.createdAt,
+          amount: payload?.data?.amount,
+          tx_ref: payload?.data?.tx_ref,
+          subscription_start_date: payload?.data?.createdAt,
         }
       );
     } else if (
