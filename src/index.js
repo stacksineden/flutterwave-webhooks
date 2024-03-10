@@ -23,7 +23,7 @@ const database = new sdk.Databases(client);
 
 async function handleFlutterwaveWebhook(payload) {
   // console.log(payload, "from flutterwave");
-  const userId = payload?.data?.customer?.id;
+  const userId = payload?.customer?.id;
 
   console.log(payload, "payload from webhook");
   // console.log(userId, "userid format");
@@ -61,8 +61,9 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: true,
-          amount: payload?.data?.amount,
-          tx_ref: payload?.data?.tx_ref,
+          amount: payload?.amount,
+          tx_ref: payload?.tx_ref,
+          subscription_start_date: payload?.createdAt,
         }
       );
     } else if (
@@ -75,8 +76,6 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: false,
-          tx_ref: payload?.data?.tx_ref,
-          amount: payload?.data?.amount,
         }
       );
     } else if (
@@ -89,8 +88,6 @@ async function handleFlutterwaveWebhook(payload) {
         documentId,
         {
           is_subscribed: false,
-          tx_ref: payload?.data?.tx_ref,
-          amount: payload?.data?.amount,
         }
       );
     }
@@ -102,6 +99,7 @@ async function handleFlutterwaveWebhook(payload) {
       error
     );
   }
+  console.log("card charge processed succesfully");
   return payload;
 }
 
@@ -124,3 +122,5 @@ app.post("/flw-webhook", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// solidity5@Cardiology5
