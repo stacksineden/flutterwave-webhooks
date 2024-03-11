@@ -84,14 +84,12 @@ async function handleFlutterwaveWebhook(payload) {
       payload?.event === "subscription.cancelled" &&
       payload?.data?.status === "deactivated"
     ) {
-      await database.updateDocument(
+      await database.deleteDocument(
         databaseId,
         userSubcriptionCollectionId,
-        documentId,
-        {
-          is_subscribed: false,
-        }
+        documentId
       );
+      console.log("user subscription details  deleted from the db");
     }
 
     console.log("User subscription status updated successfully in Appwrite");
