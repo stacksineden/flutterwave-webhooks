@@ -65,7 +65,7 @@ async function handleFlutterwaveWebhook(payload) {
           is_subscribed: true,
           amount: payload?.data?.amount,
           tx_ref: payload?.data?.tx_ref,
-          subscription_start_date: payload?.data?.createdAt,
+          subscription_start_date: payload?.data?.created_at,
         }
       );
     } else if (
