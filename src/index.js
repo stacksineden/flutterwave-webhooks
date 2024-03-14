@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const sdk = require("node-appwrite");
+const axios = require("axios");
 
 dotenv.config();
 
@@ -117,6 +118,27 @@ app.post("/flw-webhook", (req, res) => {
   // console.log(payload, "original from flutterwave");
   handleFlutterwaveWebhook(payload);
   res.status(200).end();
+});
+
+//get payment plans
+app.get("/payment-plans", async (req, res) => {
+  try {
+    const options = {
+      method: "GET",
+      url: `${process.env.FLUTTERWAVE_BASE_API_URL}/payment-plans`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.FLUTTERWAVE_SECRET_KEY}`,
+      },
+    };
+
+    const response = await axios(options);
+    // Sending the response body back to the client
+    res.status(200).send(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.listen(port, () => {
